@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 import RecipeCard from './RecipeCard';
 import './RecipeSearch.css';
 
-
 function RecipeSearch({ query }) {
   const [recipes, setRecipes] = useState([]);
+  const [noResults, setNoResults] = useState(false)
 
 
   useEffect(() => {
@@ -17,6 +17,7 @@ function RecipeSearch({ query }) {
 
       axios.get(url)
         .then(response => {
+
           const data = response.data.hits.map(hit => hit.recipe);
 
           const sortedRecipes = data.sort((a, b) => {
@@ -25,11 +26,21 @@ function RecipeSearch({ query }) {
             return complexityA - complexityB;
           });
 
-          setRecipes(sortedRecipes.slice(0, 15));
+          if (response.data.hits.length < 1 ) {
+            setRecipes([]);
+            setNoResults(true);
+          } else {
+            setRecipes(sortedRecipes.slice(0,15));
+            setNoResults(false);
+          }
+
         })
         .catch(error => {
           console.error("Axios error: ", error)
         });
+    } else {
+      setRecipes([]);
+      setNoResults(false);
     }
   }, [query]);
 
@@ -42,12 +53,18 @@ function RecipeSearch({ query }) {
   }
 
   return (
+    <>
     <div className="recipe-grid">
-      {recipes.map((recipe, index) => (
+      {
+      recipes.map((recipe, index) => (
         <RecipeCard key={index} recipe={recipe} complexity={calculateComplexity(recipe)} />
       ))
       }
     </div>
+    <div>
+      {noResults ? (<p>No results found for entered search term!</p>) : (<p></p>)}
+    </div>
+    </>
   );
 }
 
