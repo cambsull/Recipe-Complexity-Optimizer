@@ -26,11 +26,11 @@ function RecipeSearch({ query }) {
             return complexityA - complexityB;
           });
 
-          if (response.data.hits.length < 1 ) {
+          if (response.data.hits.length < 1) {
             setRecipes([]);
             setNoResults(true);
           } else {
-            setRecipes(sortedRecipes.slice(0,15));
+            setRecipes(sortedRecipes.slice(0, 15));
             setNoResults(false);
           }
 
@@ -54,16 +54,16 @@ function RecipeSearch({ query }) {
 
   return (
     <>
-    <div className="recipe-grid">
-      {
-      recipes.map((recipe, index) => (
-        <RecipeCard key={index} recipe={recipe} complexity={calculateComplexity(recipe)} />
-      ))
-      }
-    </div>
-    <div>
-      {noResults ? (<p>No results found for entered search term!</p>) : (<p></p>)}
-    </div>
+      <div className="recipe-grid">
+        {
+          recipes.map((recipe, index) => (
+            <RecipeCard key={index} recipe={recipe} complexity={calculateComplexity(recipe)} />
+          ))
+        }
+      </div>
+      <div>
+        {noResults ? (<p>No results found for entered search term!</p>) : (<p></p>)}
+      </div>
     </>
   );
 }
