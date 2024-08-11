@@ -1,12 +1,8 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
-
-
-// Functions to call API
 function RecipeSearch({ query }) {
   const [recipes, setRecipes] = useState([])
-
 
   useEffect(() => {
 
@@ -26,7 +22,7 @@ function RecipeSearch({ query }) {
           return complexityA - complexityB;
         });
 
-        setRecipes(sortedRecipes);
+        setRecipes(sortedRecipes.slice(0,15));
       })
       .catch(error => {
         console.error("Axios error: ", error)
@@ -56,7 +52,7 @@ function RecipeSearch({ query }) {
           </div>
         ))
       ) : (
-        <p>Loading...</p>
+        <p>Please search for a recipe to display results</p>
       )}
     </div>
   );
