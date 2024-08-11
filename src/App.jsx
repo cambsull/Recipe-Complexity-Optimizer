@@ -1,9 +1,6 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
-//
 import {RecipeSearch} from './util/RecipeSearch.jsx';
 
 function App() {
@@ -16,8 +13,11 @@ function App() {
  
   return (
     <>
+    <div className="title">ADHD Recipe Finder</div>
+    <h2>Search for a recipe and the results will be sorted by relative complexity!</h2>
       <div>
         <input
+          className = "searchBar"
           type = "text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}

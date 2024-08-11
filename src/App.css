@@ -5,6 +5,18 @@
   text-align: center;
 }
 
+.searchBar {
+  height: 2rem;
+  width: 8rem;
+  margin: 1rem;
+  padding: 0.25rem;
+}
+
+.title {
+  height: 4rem;
+  width: auto;
+  font-size: 2rem;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
