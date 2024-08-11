@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react';
 
 
 // Functions to call API
-
-function RecipeSearch({query}) {
+function RecipeSearch({ query }) {
   const [recipes, setRecipes] = useState([])
 
 
@@ -62,4 +61,5 @@ function RecipeSearch({query}) {
     </div>
   );
 }
+
 export { RecipeSearch };
