@@ -8,17 +8,19 @@ function RecipeSearch({ query }) {
   const [noResults, setNoResults] = useState(false)
 
 
+
   useEffect(() => {
     if (query) {
-      const apiId = import.meta.env.VITE_APP_ID;
-      const apiKey = import.meta.env.VITE_APP_KEY;
+      const appId = import.meta.env.VITE_APP_ID;
+      const appKey = import.meta.env.VITE_APP_KEY;
 
-      const url = `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${apiId}&app_key=${apiKey}`;
+      const url = `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${appId}&app_key=${appKey}`;
 
       axios.get(url)
         .then(response => {
-
-          const data = response.data.hits.map(hit => hit.recipe);
+          const data = response.data.hits
+            .map(hit => hit.recipe)
+            .filter(recipe => recipe.totalTime && recipe.totalTime > 0);
 
           const sortedRecipes = data.sort((a, b) => {
             const complexityA = calculateComplexity(a);
@@ -30,10 +32,9 @@ function RecipeSearch({ query }) {
             setRecipes([]);
             setNoResults(true);
           } else {
-            setRecipes(sortedRecipes.slice(0, 15));
+            setRecipes(sortedRecipes);
             setNoResults(false);
           }
-
         })
         .catch(error => {
           console.error("Axios error: ", error)
@@ -46,10 +47,44 @@ function RecipeSearch({ query }) {
 
   const calculateComplexity = (recipe) => {
     const ingredientCount = recipe.ingredientLines.length;
-    const instructionLength = recipe.instructions ? recipe.instructions.length : 0;
+    const dishType = recipe.dishType[0] || '';
     const totalTime = recipe.totalTime || 0;
 
-    return ((ingredientCount + instructionLength / 100) + (totalTime / 10));
+    let dishWeight;
+
+    switch(dishType) {
+      case "main course":
+       dishWeight = 10;
+       break;
+      case "condiments and sauces":
+        dishWeight = 5;
+        break;
+      case "soup":
+        dishWeight = 5;
+        break;
+      case "desserts":
+        dishWeight = 10;
+        break;
+      case "drinks":
+        dishWeight = 5;
+        break;
+      case "starter":
+        dishWeight = 5;
+        break;
+      case "snacks":
+        dishWeight = 5;
+        break;
+      default:
+        dishWeight = 1;
+    }
+
+    console.log(recipe.dishType, dishWeight)
+
+    if (totalTime === 0) {
+      return ((ingredientCount + dishWeight / 10));
+    }
+
+    return ((ingredientCount + dishWeight / 100) + (totalTime / 10));
   }
 
   return (
@@ -57,7 +92,7 @@ function RecipeSearch({ query }) {
       <div className="recipe-grid">
         {
           recipes.map((recipe, index) => (
-            <RecipeCard key={index} recipe={recipe} complexity={calculateComplexity(recipe)} />
+            <RecipeCard key={index} recipe={recipe} ingredientCount={recipe.ingredientLines.length} dishType={recipe.dishType[0]} totalTime = {recipe.totalTime} complexity={calculateComplexity(recipe)} />
           ))
         }
       </div>
