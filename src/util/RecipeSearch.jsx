@@ -7,8 +7,6 @@ function RecipeSearch({ query }) {
   const [recipes, setRecipes] = useState([]);
   const [noResults, setNoResults] = useState(false)
 
-
-
   useEffect(() => {
     if (query) {
       const appId = import.meta.env.VITE_APP_ID;
@@ -47,12 +45,12 @@ function RecipeSearch({ query }) {
 
   const calculateComplexity = (recipe) => {
     const ingredientCount = recipe.ingredientLines.length;
-    const dishType = recipe.dishType[0] || '';
+    const dishType = Array.isArray(recipe.dishType) && recipe.dishType.length > 0 ? recipe.dishType[0] : '';
     const totalTime = recipe.totalTime || 0;
 
     let dishWeight;
 
-    switch(dishType) {
+    switch(dishType.toLowerCase()) {
       case "main course":
        dishWeight = 10;
        break;
@@ -78,7 +76,7 @@ function RecipeSearch({ query }) {
         dishWeight = 1;
     }
 
-    console.log(recipe.dishType, dishWeight)
+    //console.log(recipe.dishType, dishWeight)
 
     if (totalTime === 0) {
       return ((ingredientCount + dishWeight / 10));
@@ -92,7 +90,7 @@ function RecipeSearch({ query }) {
       <div className="recipe-grid">
         {
           recipes.map((recipe, index) => (
-            <RecipeCard key={index} recipe={recipe} ingredientCount={recipe.ingredientLines.length} dishType={recipe.dishType[0]} totalTime = {recipe.totalTime} complexity={calculateComplexity(recipe)} />
+            <RecipeCard key={index} recipe={recipe} ingredientCount={recipe.ingredientLines.length} dishType={recipe.dishType ? recipe.dishType[0] : 'not available'} totalTime = {recipe.totalTime} complexity={calculateComplexity(recipe)} />
           ))
         }
       </div>
