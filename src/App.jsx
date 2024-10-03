@@ -13,7 +13,7 @@ function App() {
  
   return (
     <>
-    <div className="title">ADHD Recipe Finder</div>
+    <div className="title">Recipe Complexity Optimizer</div>
     <h2>Search for a recipe and the results will be sorted by relative complexity!</h2>
       <div>
         <input

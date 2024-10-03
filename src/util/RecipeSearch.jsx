@@ -82,7 +82,7 @@ function RecipeSearch({ query }) {
       return ((ingredientCount + dishWeight / 10));
     }
 
-    return ((ingredientCount + dishWeight / 100) + (totalTime / 10));
+    return ((ingredientCount + dishWeight / 100) + (totalTime / 10)).toFixed(2);
   }
 
   return (
