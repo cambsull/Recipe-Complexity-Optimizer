@@ -6,4 +6,4 @@ The complexity of each recipe is calculated based on an algorithm that takes int
 
 Currently running on the free version of the Edamam API, so rate usage is limited. Please contact me for a demonstration!
 
-![Recipe Complexity Optimizer Screenshot](src\images\readmeImage.PNG)
+![Recipe Complexity Optimizer Screenshot](./src\images\readmeImage.PNG)
